@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:api.anthropic.com)",
+      "Bash(mkdir -p /tmp/design-extract)",
+      "Read(//tmp/**)",
+      "Bash(gunzip -c /Users/serge/.claude/projects/-Users-serge-workspace-potio-roast/f5daac79-e529-4b10-8a83-b98ed65aa3b4/tool-results/webfetch-1778149328413-iav73x.bin)",
+      "Read(//private/tmp/design-extract/**)",
+      "Bash(tar -xf extracted.tar)",
+      "WebFetch(domain:allscreenshots.com)",
+      "WebFetch(domain:docs.allscreenshots.com)",
+      "Bash(pnpm --version)",
+      "Bash(npm --version)",
+      "Bash(npm install *)",
+      "Bash(npm run *)",
+      "Bash(curl -sS -o /dev/null -w \"POST /api/roast \\(no body\\) → HTTP %{http_code}\\\\n\" -X POST http://localhost:3000/api/roast)",
+      "Bash(curl -sS -X POST -H \"Content-Type: application/json\" -d '{\"url\":\"not a url\"}' http://localhost:3000/api/roast)",
+      "Bash(curl -sS -X POST -H \"Content-Type: application/json\" -d '{\"url\":\"http://127.0.0.1/\"}' http://localhost:3000/api/roast)",
+      "Bash(kill 97783)",
+      "Bash(wait)",
+      "Bash(npm uninstall *)",
+      "Bash(npm view *)"
+    ]
+  }
+}

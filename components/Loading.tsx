@@ -53,9 +53,6 @@ export function Loading({ url, stages, startedAt, errored }: Props) {
 
   return (
     <div style={{ maxWidth: 920, margin: '0 auto', padding: '64px 28px 80px' }}>
-      <div className="t-up t-mute" style={{ fontSize: 11, marginBottom: 14 }}>
-        <span style={{ color: 'var(--accent)' }}>$</span> ./roast --running
-      </div>
       <h1
         className="serif"
         style={{
@@ -72,31 +69,49 @@ export function Loading({ url, stages, startedAt, errored }: Props) {
           {shortUrl(url)}
         </span>
       </h1>
-      <p style={{ fontSize: 14, color: 'var(--fg-dim)', marginBottom: 32 }}>
+      <p style={{ fontSize: 14, color: 'var(--fg-dim)', marginBottom: 28 }}>
         Won't be a moment. Brewing the tea.
       </p>
 
-      <div className="term">
-        <div className="term-bar">
-          <div className="term-dots">
-            <span className="term-dot r" />
-            <span className="term-dot y" />
-            <span className="term-dot g" />
-          </div>
-          <div className="term-title">
-            ~/roast — <b>diagnostic.log</b>
-          </div>
+      {/* Prominent progress bar (moved above the stages list) */}
+      <div style={{ marginBottom: 24 }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            fontSize: 11,
+            color: 'var(--fg-mute)',
+            marginBottom: 8,
+            letterSpacing: '0.04em',
+          }}
+        >
+          <span>{pctDone}% complete</span>
+          <span>elapsed {fmtDur(elapsed)}</span>
+        </div>
+        <div
+          style={{
+            height: 6,
+            background: 'var(--line)',
+            borderRadius: 3,
+            position: 'relative',
+            overflow: 'hidden',
+          }}
+        >
           <div
             style={{
-              width: 60,
-              fontSize: 11,
-              color: 'var(--fg-mute)',
-              textAlign: 'right',
+              position: 'absolute',
+              left: 0,
+              top: 0,
+              bottom: 0,
+              width: `${pctDone}%`,
+              background: 'var(--accent)',
+              transition: 'width 0.4s ease',
             }}
-          >
-            {pctDone}%
-          </div>
+          />
         </div>
+      </div>
+
+      <div className="term">
         <div
           className="term-body"
           style={{ minHeight: 360, position: 'relative', overflow: 'hidden' }}
@@ -157,65 +172,6 @@ export function Loading({ url, stages, startedAt, errored }: Props) {
         </div>
       </div>
 
-      <div
-        style={{
-          marginTop: 18,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 14,
-          fontSize: 11,
-          color: 'var(--fg-mute)',
-        }}
-      >
-        <div style={{ flex: 1, height: 2, background: 'var(--line)', position: 'relative' }}>
-          <div
-            style={{
-              position: 'absolute',
-              left: 0,
-              top: 0,
-              bottom: 0,
-              width: `${pctDone}%`,
-              background: 'var(--accent)',
-              transition: 'width 0.4s ease',
-            }}
-          />
-        </div>
-        <span>elapsed {fmtDur(elapsed)}</span>
-      </div>
-
-      <div
-        style={{
-          marginTop: 36,
-          padding: '18px 22px',
-          borderLeft: '2px solid var(--accent)',
-          background: 'var(--accent-soft)',
-          maxWidth: 620,
-        }}
-      >
-        <div
-          className="t-up"
-          style={{
-            fontSize: 10,
-            color: 'var(--accent)',
-            letterSpacing: '0.12em',
-            marginBottom: 6,
-          }}
-        >
-          Preliminary read
-        </div>
-        <div
-          style={{
-            fontFamily: 'var(--serif)',
-            fontStyle: 'italic',
-            fontSize: 18,
-            lineHeight: 1.4,
-          }}
-        >
-          {pctDone < 35 && 'Three pricing tiers. One of them is hiding.'}
-          {pctDone >= 35 && pctDone < 75 && 'Forty-one feature rows. I am counting.'}
-          {pctDone >= 75 && "There it is. Found the thing. We'll need a sit-down."}
-        </div>
-      </div>
     </div>
   );
 }

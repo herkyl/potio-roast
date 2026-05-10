@@ -30,9 +30,6 @@ export function Landing({ onSubmit, initialUrl = '' }: Props) {
   return (
     <div style={{ maxWidth: 920, margin: '0 auto', padding: '64px 28px 80px' }}>
       <div style={{ marginBottom: 36 }}>
-        <div className="t-up t-mute" style={{ fontSize: 11, marginBottom: 14 }}>
-          ./roast --target
-        </div>
         <h1
           className="serif"
           style={{
@@ -68,33 +65,8 @@ export function Landing({ onSubmit, initialUrl = '' }: Props) {
       </div>
 
       <form onSubmit={submit} className="term" style={{ marginBottom: 28 }}>
-        <div className="term-bar">
-          <div className="term-dots">
-            <span className="term-dot r" />
-            <span className="term-dot y" />
-            <span className="term-dot g" />
-          </div>
-          <div className="term-title">
-            ~/roast — <b>pricing-audit</b>
-          </div>
-          <div style={{ width: 50 }} />
-        </div>
-
-        <div className="term-body" style={{ padding: '24px 28px 22px' }}>
+        <div className="term-body" style={{ padding: '28px 28px 22px' }}>
           <label style={{ display: 'block' }}>
-            <div
-              style={{
-                fontSize: 11,
-                color: 'var(--fg-mute)',
-                marginBottom: 8,
-              }}
-            >
-              <span style={{ color: 'var(--ok)' }}>roast@potio</span>
-              <span style={{ color: 'var(--fg-mute)' }}>:</span>
-              <span style={{ color: 'var(--accent)' }}>~</span>
-              <span style={{ color: 'var(--fg-mute)' }}>$ </span>
-              fetch --pricing
-            </div>
             <div
               style={{
                 display: 'flex',

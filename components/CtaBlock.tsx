@@ -10,7 +10,7 @@ export function CtaBlock() {
           marginBottom: 10,
         }}
       >
-        Next steps · the soft ask
+        Next steps
       </div>
       <div
         className="serif"
@@ -22,7 +22,7 @@ export function CtaBlock() {
           fontWeight: 400,
         }}
       >
-        Want a human to look at this?
+        I'll look over your pricing for free.
       </div>
       <p
         style={{
@@ -32,8 +32,8 @@ export function CtaBlock() {
           margin: '0 0 18px',
         }}
       >
-        Potio runs a paid pricing clinic. Bring the roast, we'll bring the whiteboard.
-        Most teams find $10k–$50k of recoverable ARR in the first session.
+        Hi, I'm Serge! I'm a 3x founder and former CEO of Toggl. I work hands-on with SaaS & AI teams to fix pricing, packaging and monetization.
+        Clients average a 75x ROI on my work. Increasing ARR by 50% to 100% is common.
       </p>
       <div
         style={{

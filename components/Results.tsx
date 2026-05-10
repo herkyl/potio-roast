@@ -52,12 +52,9 @@ export function Results({ result, onHome }: Props) {
         }}
       >
         <div>
-          <div className="t-up t-mute" style={{ fontSize: 11, marginBottom: 8 }}>
+          <div className="t-up t-mute" style={{ fontSize: 11 }}>
             <span style={{ color: 'var(--ok)' }}>✓</span> &nbsp;run complete ·{' '}
             <span style={{ color: 'var(--fg-dim)' }}>{result.duration}</span>
-          </div>
-          <div style={{ fontSize: 14, color: 'var(--fg-dim)' }}>
-            <span style={{ color: 'var(--accent)' }}>$</span> roast {result.url}
           </div>
         </div>
         <div style={{ display: 'flex', gap: 8 }}>

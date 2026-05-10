@@ -34,19 +34,9 @@ export function Shell({ children, screen, onHome }: Props) {
             <Brandmark size={15} />
           </button>
           <span className="t-mute" style={{ fontSize: 11 }}>
-            v0.4 · cli
+            v0.4
           </span>
         </div>
-        <nav
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 18,
-            fontSize: 12,
-          }}
-        >
-          <span style={{ color: 'var(--ok)' }}>● online</span>
-        </nav>
       </header>
 
       <main style={{ flex: 1 }}>{children}</main>
@@ -54,7 +44,7 @@ export function Shell({ children, screen, onHome }: Props) {
       <footer
         style={{
           display: 'flex',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
           alignItems: 'center',
           padding: '14px 22px',
           borderTop: '1px solid var(--line)',
@@ -65,11 +55,6 @@ export function Shell({ children, screen, onHome }: Props) {
         }}
       >
         <div>© Potio · Pricing Clinic · made for SaaS founders who can take it</div>
-        <div style={{ display: 'flex', gap: 14 }}>
-          <span>
-            screen: <span style={{ color: 'var(--fg-dim)' }}>{screen}</span>
-          </span>
-        </div>
       </footer>
     </div>
   );

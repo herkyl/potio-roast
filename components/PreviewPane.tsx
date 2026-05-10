@@ -8,17 +8,6 @@ type Props = {
 export function PreviewPane({ url, screenshot, pageHeightPx, scanned }: Props) {
   return (
     <div className="term preview-term">
-      <div className="term-bar">
-        <div className="term-dots">
-          <span className="term-dot r" />
-          <span className="term-dot y" />
-          <span className="term-dot g" />
-        </div>
-        <div className="term-title">
-          <b>captured.png</b>
-        </div>
-        <div style={{ width: 50 }} />
-      </div>
       <div className="preview-stage">
         <div className="preview-frame">
           {screenshot ? (

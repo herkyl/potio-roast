@@ -8,17 +8,6 @@ export function Verdict({ result }: Props) {
   const { score, grade, tier, summary, counts } = result;
   return (
     <div className="term" style={{ overflow: 'hidden' }}>
-      <div className="term-bar">
-        <div className="term-dots">
-          <span className="term-dot r" />
-          <span className="term-dot y" />
-          <span className="term-dot g" />
-        </div>
-        <div className="term-title">
-          ~/roast — <b>verdict.txt</b>
-        </div>
-        <div style={{ width: 60 }} />
-      </div>
       <div className="verdict-grid">
         <div style={{ display: 'flex', alignItems: 'baseline', gap: 14 }}>
           <div

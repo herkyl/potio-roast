@@ -26,6 +26,9 @@ export default function Page() {
     setStages([]);
     setResult(null);
     setError(null);
+    if (typeof window !== 'undefined' && window.location.pathname !== '/') {
+      window.history.replaceState({}, '', '/');
+    }
   }, []);
 
   const handleSubmit = useCallback(async (data: { url: string; context: string }) => {
@@ -99,8 +102,20 @@ export default function Page() {
         });
       } else if (event === 'result') {
         const r = data as Result;
+        console.log('[roast] result received, slug=', r.slug, 'keys=', Object.keys(r));
         setResult(r);
         setScreen('results');
+        if (r.slug && typeof window !== 'undefined') {
+          const target = `/r/${r.slug}`;
+          console.log('[roast] updating URL to', target);
+          window.history.replaceState({}, '', target);
+          // Verify it actually stuck on the next tick.
+          setTimeout(() => {
+            console.log('[roast] URL after replaceState:', window.location.pathname);
+          }, 0);
+        } else {
+          console.warn('[roast] no slug on result, URL not updated');
+        }
       } else if (event === 'error') {
         setError((data as { message: string }).message);
       }

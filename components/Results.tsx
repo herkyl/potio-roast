@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { Result } from '@/lib/schemas';
 import { Verdict } from './Verdict';
 import { RoastCard } from './RoastCard';
@@ -22,6 +22,22 @@ export function Results({ result, onHome }: Props) {
       ),
     [result.roasts]
   );
+
+  const [shareLabel, setShareLabel] = useState<'⌘ share' | '✓ copied'>('⌘ share');
+  const onShare = async () => {
+    if (typeof window === 'undefined') return;
+    const shareUrl = result.slug
+      ? `${window.location.origin}/r/${result.slug}`
+      : window.location.href;
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setShareLabel('✓ copied');
+      setTimeout(() => setShareLabel('⌘ share'), 1800);
+    } catch {
+      // Some browsers (or insecure contexts) reject writeText. Fallback: prompt.
+      window.prompt('Copy this link:', shareUrl);
+    }
+  };
 
   return (
     <div style={{ maxWidth: 1480, margin: '0 auto', padding: '40px 28px 80px' }}>
@@ -51,8 +67,13 @@ export function Results({ result, onHome }: Props) {
           <button className="btn btn-sm" type="button" disabled title="Coming soon">
             ⇣ pdf
           </button>
-          <button className="btn btn-sm" type="button" disabled title="Coming soon">
-            ⌘ share
+          <button
+            className="btn btn-sm"
+            type="button"
+            onClick={onShare}
+            title="Copy share link"
+          >
+            {shareLabel}
           </button>
         </div>
       </div>

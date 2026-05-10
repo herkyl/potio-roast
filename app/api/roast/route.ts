@@ -11,6 +11,7 @@ import {
   releaseConcurrent,
 } from '@/lib/ratelimit';
 import { logger } from '@/lib/logger';
+import { saveResult, slugFromUrl } from '@/lib/persist';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -197,8 +198,11 @@ export async function POST(req: NextRequest) {
             minor: analysis.roasts.filter((r) => r.severity === 'minor').length,
           };
 
+          const slug = slugFromUrl(targetUrl);
+
           const result: Result = {
             url: targetUrl,
+            slug,
             screenshot: screenshot?.url ?? null,
             scanned: new Date().toISOString().slice(0, 10),
             duration: fmtDuration(Date.now() - startedAt),
@@ -218,8 +222,17 @@ export async function POST(req: NextRequest) {
             `${counts.critical} critical · ${counts.major} major · ${counts.minor} minor`
           );
 
+          // Best-effort save — never fail the request if persistence breaks.
+          try {
+            await saveResult(slug, result);
+          } catch (err) {
+            logger.error(
+              `persist save failed (non-fatal): ${err instanceof Error ? err.message : err}`
+            );
+          }
+
           logger.info(
-            `roast complete in ${result.duration} — score ${result.score} ${result.grade}, ${result.roasts.length} findings`
+            `roast complete in ${result.duration} — score ${result.score} ${result.grade}, ${result.roasts.length} findings → /r/${slug}`
           );
           send('result', result);
         } catch (err) {

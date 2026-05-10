@@ -22,6 +22,7 @@ export const CountsSchema = z.object({
 
 export const ResultSchema = z.object({
   url: z.string(),
+  slug: z.string().optional(),
   screenshot: z.string().nullable(),
   scanned: z.string(),
   duration: z.string(),

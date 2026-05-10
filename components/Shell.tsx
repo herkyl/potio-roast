@@ -1,3 +1,5 @@
+'use client';
+
 import { Brandmark } from './Brandmark';
 
 type Props = {

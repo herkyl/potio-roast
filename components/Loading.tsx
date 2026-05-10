@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import type { Stage } from '@/lib/schemas';
+import { BrailleSpinner } from './BrailleSpinner';
 
 type Props = {
   url: string;
@@ -257,10 +258,14 @@ function LogLine({
           fontFamily: 'var(--mono)',
         }}
       >
-        {isErr ? '✗' : isDone ? '✓' : (
-          <span style={{ animation: isRunning ? 'pulse-soft 1s ease-in-out infinite' : undefined }}>
-            ›
-          </span>
+        {isErr ? (
+          '✗'
+        ) : isDone ? (
+          '✓'
+        ) : isRunning ? (
+          <BrailleSpinner color="var(--accent)" />
+        ) : (
+          '›'
         )}
       </span>
       <div>

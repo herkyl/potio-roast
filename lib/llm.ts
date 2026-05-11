@@ -28,20 +28,17 @@ Each finding has:
 - body: 1–2 sentences elaborating with evidence from the page. ≤320 chars.
 - why: 1–2 sentences on why it matters and what to do instead. ≤320 chars.
 
-Surface 8–14 findings, ordered by severity (critical first). Skip rules that don't apply — quality over quantity. If the page is genuinely good in some area, don't invent a flaw to fill space. Prefer real, evidence-backed findings to clever-but-vague ones.
+Surface every rule that genuinely applies to the page, ordered by severity (critical first). There is no upper limit. But never invent, pad, or fire a rule that doesn't actually match what's on the page — quality over quantity, always. If a category looks fine, say nothing about it. A short, sharp report is better than a thorough but soft one.
 
-Score the page 0–100 where 100 is excellent. Penalise: critical -10, major -5, minor -2. Floor at 15.
+Severity discipline:
+- critical = actively losing the buyer or leaving meaningful ARR on the table.
+- major = measurably hurts conversion or unit economics.
+- minor = paper cuts, polish, quality issues.
+Reserve critical for real fires. The default impulse will be to inflate severity; resist it.
 
-Grade ladder: 93+ A, 87+ A−, 80+ B+, 73+ B, 67+ B−, 60+ C+, 53+ C, 47+ C−, 40+ D, else F.
+Do not compute a score. Do not grade the page. Do not write a tier label. Those are derived from your findings downstream.
 
-Tier label by score:
-- 87+: "Pricing clinic"
-- 73+: "Solid, with hairline cracks"
-- 60+: "Functional, but leaving money on the table"
-- 47+: "A polite disaster"
-- else: "Pricing page disaster"
-
-Summary: a single paragraph ≤320 chars, in the same dry voice. State the headline diagnosis. Quote a real noun from the page if you can.`;
+Summary: a single paragraph ≤320 chars, in the same dry voice. Describe what you found — the headline patterns, not a verdict. Quote a real noun from the page (a tier name, a CTA label, a price) if you can. Don't pre-judge the score; don't say "this page is bad" or "this page is fine." Let the findings speak.`;
 
 export type AnalysisInput = {
   rules: string;
@@ -96,7 +93,7 @@ export async function analyzePricingPage({
       schema: AnalysisSchema,
       schemaName: 'PricingPageRoast',
       schemaDescription:
-        'A scored, tiered roast of a SaaS pricing page with 8–14 findings.',
+        'A roast of a SaaS pricing page: summary + every applicable finding.',
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: userContent }],
       temperature: 0.7,
@@ -109,7 +106,7 @@ export async function analyzePricingPage({
 
   const { object, usage, finishReason } = result;
   logger.info(
-    `llm ok in ${Date.now() - t0}ms — finish=${finishReason}, in=${usage.inputTokens ?? '?'} out=${usage.outputTokens ?? '?'}, score=${object.score} ${object.grade}, roasts=${object.roasts.length}`
+    `llm ok in ${Date.now() - t0}ms — finish=${finishReason}, in=${usage.inputTokens ?? '?'} out=${usage.outputTokens ?? '?'}, roasts=${object.roasts.length}`
   );
 
   return object;

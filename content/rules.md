@@ -54,7 +54,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 
 ### Artificial feature limits
 - severity: major
-- region: feature-matrix
+- region: tiers
 - look_for: Hard limits on features that have no plausible cost-to-serve justification (e.g. "3 projects" on a single-tenant desktop app, "1 webhook" on a free tier).
 - why: Nuisance limits build resentment without building revenue. Limits should track real cost or real customer value, not be there for the sake of being a fence.
 
@@ -84,7 +84,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 
 ### Overlapping feature sets
 - severity: major
-- region: feature-matrix
+- region: tiers
 - look_for: Two adjacent tiers have nearly identical feature lists with only marginal differences in limits or cosmetic add-ons.
 - why: If the difference between tiers isn't obvious in five seconds, the cheaper one wins. Tiers exist to separate willingness-to-pay, not to look full.
 
@@ -323,7 +323,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: Hick's Law: more options means slower decisions and lower conversion. Pick the primary action per tier and demote the rest.
 
 ### Cognitive overload in matrices
-- severity: major
+- severity: minor
 - region: feature-matrix
 - look_for: A comparison table with 30+ feature rows is shown fully expanded on page load, with no progressive disclosure or collapse.
 - why: Buyers compare 3-5 things, not 30. Dense matrices burn the buyer's attention budget before they reach the decision. Collapse the deep details under a "See full comparison" toggle.
@@ -393,19 +393,19 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: Buyers want social proof inside the decision. A "Most popular" badge on the target tier shortcuts the comparison and validates the choice.
 
 ### Checkmark soup
-- severity: major
+- severity: minor
 - region: feature-matrix
 - look_for: A long comparison table consisting almost entirely of green checkmarks across all tiers, with no text values, no negatives, no quantities.
 - why: When every cell is a checkmark, no cell carries information. Replace generic checks with text values where relevant ("Up to 50", "Unlimited", "Custom") and remove rows where every tier checks.
 
 ### Non-sticky table headers
-- severity: major
+- severity: minor
 - region: feature-matrix
 - look_for: Scrolling down a long feature matrix causes the tier names, prices, and CTAs to scroll out of view, leaving the buyer staring at unlabeled columns.
 - why: Buyers forget which column maps to which tier within ten rows. Sticky headers (or a small floating recap) are table stakes for any matrix longer than a screen.
 
 ### Missing tooltips on jargon
-- severity: major
+- severity: minor
 - region: feature-matrix
 - look_for: Proprietary or non-obvious feature names appear in the matrix with no info icon or hover tooltip to explain what they actually do.
 - why: Buyers should not have to Google a feature name to figure out if they need it. A tooltip beats an off-site search every time.
@@ -423,13 +423,13 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: The buyer wants to know if enterprise gives unlimited, more, or the same. State the scaled value ("Unlimited", "Custom").
 
 ### No feature categorization
-- severity: major
+- severity: minor
 - region: feature-matrix
 - look_for: A feature matrix with 20+ rows presented in one continuous block, with no subheadings (Security, Reporting, Integrations, etc.).
 - why: Unsegmented matrices are unscannable. Category headers let buyers jump to the rows they care about and skip the rest.
 
 ### No CTA at bottom of long table
-- severity: major
+- severity: minor
 - region: feature-matrix
 - look_for: A long feature matrix has CTAs only at the top of each column. After scrolling through 40 rows there is no purchase or trial button at the bottom.
 - why: The bottom of the table is exactly when the buyer has decided. Making them scroll back up to convert is a free way to lose them.
@@ -598,7 +598,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 
 ### Support SLAs not tiered
 - severity: major
-- region: feature-matrix
+- region: tiers
 - look_for: Support is listed identically across all tiers with no response-time differentiation (e.g. "24-hour response" in Starter vs "1-hour response" in Enterprise).
 - why: Response time is one of the easiest upsell axes. Failing to tier it leaves money on the table and removes a real reason for buyers to upgrade.
 

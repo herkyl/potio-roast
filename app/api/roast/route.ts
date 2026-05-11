@@ -12,6 +12,12 @@ import {
 } from '@/lib/ratelimit';
 import { logger } from '@/lib/logger';
 import { saveResult, slugFromUrl } from '@/lib/persist';
+import {
+  computeScore,
+  countBySeverity,
+  scoreToGrade,
+  scoreToTier,
+} from '@/lib/scoring';
 
 export const runtime = 'nodejs';
 export const maxDuration = 60;
@@ -191,12 +197,10 @@ export async function POST(req: NextRequest) {
             `${analysis.roasts.length} findings`
           );
 
-          const counts = {
-            critical: analysis.roasts.filter((r) => r.severity === 'critical')
-              .length,
-            major: analysis.roasts.filter((r) => r.severity === 'major').length,
-            minor: analysis.roasts.filter((r) => r.severity === 'minor').length,
-          };
+          const counts = countBySeverity(analysis.roasts);
+          const score = computeScore(counts);
+          const grade = scoreToGrade(score);
+          const tier = scoreToTier(score);
 
           const slug = slugFromUrl(targetUrl);
 
@@ -207,9 +211,9 @@ export async function POST(req: NextRequest) {
             scanned: new Date().toISOString().slice(0, 10),
             duration: fmtDuration(Date.now() - startedAt),
             pageHeightPx: screenshot?.height ?? null,
-            score: analysis.score,
-            grade: analysis.grade,
-            tier: analysis.tier,
+            score,
+            grade,
+            tier,
             summary: analysis.summary,
             roasts: analysis.roasts.map((r, i) => ({
               ...r,

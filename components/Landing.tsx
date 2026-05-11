@@ -7,7 +7,7 @@ type Props = {
   initialUrl?: string;
 };
 
-const SAMPLES = ['toggl.com/track/pricing', 'linear.app/pricing', 'notion.so/pricing'];
+const SAMPLES = ['linear.app/pricing', 'notion.so/pricing', 'toggl.com/track/pricing'];
 
 export function Landing({ onSubmit, initialUrl = '' }: Props) {
   const [url, setUrl] = useState(initialUrl);

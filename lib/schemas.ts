@@ -64,11 +64,12 @@ export type Stage = {
   ms?: number;
 };
 
-/** Claude analysis output (no metadata yet — assembled by the API route) */
+/**
+ * LLM analysis output. The model emits findings + a descriptive summary;
+ * score/grade/tier are computed deterministically in lib/scoring.ts from
+ * the finding distribution, so the curve is tweakable without re-prompting.
+ */
 export const AnalysisSchema = z.object({
-  score: z.number().min(0).max(100),
-  grade: z.string(),
-  tier: z.string(),
   summary: z.string(),
   roasts: z.array(
     z.object({

@@ -165,13 +165,13 @@ export async function POST(req: NextRequest) {
           // 5 + 6. Diagnostics + sharpening — Claude call
           const finishDx = stageTimer(
             'dx',
-            'Cross-referencing diagnostics',
-            'matching patterns…'
+            'Cross-referencing patterns',
+            'matching against the knowledge base'
           );
           const finishSharp = stageTimer(
             'sharp',
             'Sharpening the knives',
-            'calibrating tone: dry british'
+            'calibrating tone'
           );
 
           const analysis = await analyzePricingPage({

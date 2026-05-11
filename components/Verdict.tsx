@@ -59,7 +59,7 @@ export function Verdict({ result }: Props) {
               marginBottom: 8,
             }}
           >
-            Tier diagnosis
+            Pricing diagnosis
           </div>
           <div
             className="serif"

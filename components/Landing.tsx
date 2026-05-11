@@ -42,10 +42,9 @@ export function Landing({ onSubmit, initialUrl = '' }: Props) {
             textWrap: 'balance',
           }}
         >
-          Your pricing page
-          <br />
+          Your pricing,&nbsp;
           <span style={{ fontStyle: 'italic', color: 'var(--fg-dim)' }}>
-            walks into a bar.
+            roasted.
           </span>
         </h1>
         <p
@@ -58,9 +57,7 @@ export function Landing({ onSubmit, initialUrl = '' }: Props) {
             lineHeight: 1.6,
           }}
         >
-          Paste a URL. We fetch it, screenshot it, and run it past the things SaaS
-          pricing pages consistently get wrong. You get the findings. Free, dry, and
-          slightly British.
+          Paste your pricing page URL. We fetch it, screenshot it, and run it past everything AI & SaaS pricing gets wrong. You get the findings. Free, no signup.
         </p>
       </div>
 
@@ -217,9 +214,7 @@ export function Landing({ onSubmit, initialUrl = '' }: Props) {
             lineHeight: 1.6,
           }}
         >
-          Hidden enterprise pricing · missing anchors · feature-matrix sprawl ·
-          weak proof · vague value copy · CTA confusion · and the small things
-          that quietly cost you ARR.
+          Overly stuffed enterprise tiers · missing anchors · feature-matrix sprawl · weak proof · fuzzy value props · CTA confusion · and the small stuff that quietly costs you ARR.
         </div>
       </div>
 

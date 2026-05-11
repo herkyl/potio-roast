@@ -19,7 +19,7 @@ const serif = Fraunces({
 });
 
 export const metadata: Metadata = {
-  title: '[roast] · pricing page diagnostics',
+  title: 'Potio Pricing Roaster',
   description:
     'Paste your SaaS pricing URL. We fetch it, screenshot it, and roast it dry.',
 };

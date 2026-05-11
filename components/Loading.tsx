@@ -64,13 +64,13 @@ export function Loading({ url, stages, startedAt, errored }: Props) {
           lineHeight: 1.05,
         }}
       >
-        Having a look at{' '}
+        Roasting{' '}
         <span style={{ fontStyle: 'italic', color: 'var(--accent)' }}>
           {shortUrl(url)}
         </span>
       </h1>
       <p style={{ fontSize: 14, color: 'var(--fg-dim)', marginBottom: 28 }}>
-        Won't be a moment. Brewing the tea.
+        Takes about a minute. Don't refresh.
       </p>
 
       {/* Prominent progress bar (moved above the stages list) */}

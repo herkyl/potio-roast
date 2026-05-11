@@ -89,7 +89,10 @@ button { font: inherit; color: inherit; }
   gap: 8px;
   transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease, transform 0.05s ease;
   white-space: nowrap;
+  text-decoration: none;
 }
+a.btn { text-decoration: none; }
+a.btn:hover { text-decoration: none; }
 .btn:hover { border-color: var(--fg); background: rgba(240,233,220,0.04); }
 .btn:active { transform: translateY(1px); }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
@@ -177,6 +180,12 @@ button { font: inherit; color: inherit; }
 .scroll::-webkit-scrollbar-track { background: transparent; }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Theme-aware brandmark logo. The component always renders both <img>
+   elements; CSS hides whichever doesn't match the current data-theme so
+   there's no JS hydration flicker. */
+[data-theme="light"] .brand-logo-on-dark { display: none !important; }
+[data-theme="light"] .brand-logo-on-light { display: block !important; }
 
 /* ---------- Animations ---------- */
 @keyframes fadeUp {

@@ -34,7 +34,7 @@ export function Shell({ children, screen, onHome }: Props) {
             <Brandmark size={15} />
           </button>
           <span className="t-mute" style={{ fontSize: 11 }}>
-            v0.4
+            v1.0
           </span>
         </div>
       </header>
@@ -54,7 +54,7 @@ export function Shell({ children, screen, onHome }: Props) {
           gap: 8,
         }}
       >
-        <div>© Potio · Pricing Clinic · made for SaaS founders who can take it</div>
+        <div>© Potio · Pricing Clinic · made for founders who can take it</div>
       </footer>
     </div>
   );

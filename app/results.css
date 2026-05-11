@@ -132,12 +132,11 @@
   background: var(--bg-deep);
 }
 
-/* CTA block at bottom of rail */
+/* CTA block — slotted as item #4 in the rail */
 .cta-block {
   border: 1px solid var(--accent);
   background: linear-gradient(180deg, rgba(255,107,61,0.06), transparent);
   padding: 22px 22px 20px;
-  margin-top: 8px;
 }
 
 /* Verdict layout responsive collapse */

@@ -97,11 +97,32 @@ export function Results({ result, onHome }: Props) {
               <Pip color="minor" n={result.counts.minor} label="minor" />
             </div>
           </div>
-          {ordered.map((r, i) => (
-            <RoastCard key={r.id} roast={r} index={i + 1} />
-          ))}
-
-          <CtaBlock />
+          {/*
+            CTA slots in as item #4 — i.e. after the first 3 findings — so it
+            sits high enough to be seen but never fights the critical roasts
+            for top billing. If there are fewer than 3 findings, it just lands
+            at the end.
+          */}
+          {(() => {
+            const ctaAfter = Math.min(3, ordered.length);
+            const before = ordered.slice(0, ctaAfter);
+            const after = ordered.slice(ctaAfter);
+            return (
+              <>
+                {before.map((r, i) => (
+                  <RoastCard key={r.id} roast={r} index={i + 1} />
+                ))}
+                <CtaBlock />
+                {after.map((r, i) => (
+                  <RoastCard
+                    key={r.id}
+                    roast={r}
+                    index={i + 1 + ctaAfter}
+                  />
+                ))}
+              </>
+            );
+          })()}
         </div>
 
         <div>

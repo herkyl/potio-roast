@@ -6,9 +6,11 @@ Voice: dry, slightly British, understated. Sharp but never cruel. Punchline firs
 
 ## Severities:
 
-`critical` — actively losing the buyer or leaving large ARR on the table
-`major` — measurably hurting conversion or unit economics
-`minor` — paper cuts and quality issues
+Calibrate strictly. Most pricing pages should not have critical findings.
+
+`critical` — fixing this could plausibly move ARR by tens of percent. Reserved for trust-destroying or buyer-blocking failures (bait-and-switch pricing, freemium that completely cannibalises paid, regulatory exposure, SMB pages that hide all prices).
+`major` — fixing this is a measurable 2-10% lift on conversion, expansion or retention.
+`minor` — paper cuts, polish, brand quality. 0.1-1% impact if any.
 
 The `look_for` and `why` fields below are operational raw material. Don't echo them back. Rewrite the finding in your own voice.
 
@@ -89,7 +91,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: If the difference between tiers isn't obvious in five seconds, the cheaper one wins. Tiers exist to separate willingness-to-pay, not to look full.
 
 ### Feature dumping over outcomes
-- severity: critical
+- severity: major
 - region: tiers
 - look_for: Tier descriptions are purely a list of technical capabilities ("API access, 5GB storage, webhooks") with no outcome headline or grouping.
 - why: Buyers buy outcomes. A tier needs a one-line "what this tier lets you do" above the feature bullets, otherwise the prospect is doing the marketing team's job in their head.
@@ -181,7 +183,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: Prospects worry about being on the hook for arbitrary future increases. A one-sentence policy ("Existing customers keep their price for 12 months after any change") removes the objection cheaply.
 
 ### Unclear auto-renewal terms
-- severity: major
+- severity: minor
 - region: faq
 - look_for: Annual plans have no nearby disclaimer about auto-renewal, renewal notification, or how to cancel before renewal.
 - why: Unclear renewal terms cause chargebacks, public complaints, and regulatory exposure. Saying so on the pricing page builds more trust than the cost in lost auto-renewals.
@@ -223,7 +225,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: A toggle the buyer can't find isn't a toggle. The toggle is a primary navigation element on this page and should be visually prominent.
 
 ### Toggle causes layout shift
-- severity: major
+- severity: minor
 - region: toggle
 - look_for: Clicking the monthly/annual toggle causes visible layout shifts, card resizing, or content reflow.
 - why: Cumulative layout shift on the pricing page hurts Core Web Vitals and frustrates buyers exactly when their eyes are locked on specific numbers.
@@ -247,7 +249,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: Standard discounts range from 15% to 30%. Bigger discounts signal that the monthly price is fictitious and erode perceived value of the product. They also trap you when you try to raise the floor later.
 
 ### Cosmetic localization
-- severity: major
+- severity: minor
 - region: tiers
 - look_for: Currency switches based on geolocation but produces awkward unrounded numbers (e.g. €47.34, £38.12) rather than locally rounded anchors (€49, £39).
 - why: Exchange-rate conversion ignores local willingness-to-pay and breaks the psychological pricing. True localization rounds and adjusts to local norms.
@@ -305,7 +307,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: "Get started" implies commitment work. Lower-friction language matches buyer intent at this stage of the funnel.
 
 ### Fake urgency
-- severity: major
+- severity: minor
 - region: tiers
 - look_for: Countdown timers, "Only X spots left", or other artificial scarcity claims on an infinitely-replicable SaaS subscription.
 - why: Fake scarcity on software destroys credibility. The buyer knows you can't run out of SaaS. The only thing it conveys is desperation. Legitimate scarcity (cohort launches, founding-customer pricing) is fine if real.
@@ -317,7 +319,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: Humans feel losses about twice as strongly as equivalent gains. Loss framing on one or two bullets sharpens urgency without becoming melodramatic.
 
 ### Competing CTAs
-- severity: major
+- severity: minor
 - region: cta
 - look_for: Each tier card has two or more CTAs of equal visual weight (e.g. "Start trial" and "Book demo" side by side).
 - why: Hick's Law: more options means slower decisions and lower conversion. Pick the primary action per tier and demote the rest.
@@ -441,13 +443,13 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: For both global buyers and AI parsers, ambiguity about currency is a small but real friction. State the currency code at least once near the prices.
 
 ### JavaScript-rendered pricing
-- severity: major
+- severity: minor
 - region: tiers
 - look_for: With JavaScript disabled, the prices, tiers, or feature matrix fail to load. The raw HTML source contains no price values, only empty containers populated at runtime.
 - why: Search engines and AI buyers (Perplexity, ChatGPT, Claude) often can't parse JS-rendered content reliably. If the price isn't in the HTML, it isn't in the world.
 
 ### Missing Product/Offer schema
-- severity: major
+- severity: minor
 - region: tiers
 - look_for: The page's HTML contains no valid JSON-LD Product, Offer, or AggregateOffer markup defining the price, currency, and tier metadata.
 - why: Structured data is how search engines and AI agents pick up rich snippets and price comparisons. Skipping it leaves real distribution on the table.
@@ -471,7 +473,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: The meta description is SERP ad copy. Mentioning starting price or "free plan available" increases click-through.
 
 ### Images instead of text for prices
-- severity: critical
+- severity: major
 - region: tiers
 - look_for: The actual price numbers or core feature lists are rendered inside PNG/JPG/SVG images rather than as HTML text.
 - why: Images aren't indexable, aren't selectable, aren't accessible to screen readers, and aren't parseable by AI buyers. It's a complete distribution and accessibility failure for the most important content on the page.
@@ -493,7 +495,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: The FAQ is anxiety reduction, not a terms-of-service document. Conversational, helpful answers build trust at the buying moment.
 
 ### Discount with no justification
-- severity: major
+- severity: minor
 - region: tiers
 - look_for: A discount is offered with no explanation of why ("50% off today", "Limited offer") and no tied reason (cohort, launch, holiday, segment).
 - why: Unjustified discounts signal desperation and devalue the product. Tie discounts to a story (Early adopter, Founding customer, Annual prepay) so they read as deliberate, not panicked.
@@ -527,13 +529,13 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 ## Trust signals
 
 ### No social proof near pricing
-- severity: critical
+- severity: major
 - region: tiers
 - look_for: No customer logos, testimonials, ratings, or case study mentions appear near the pricing matrix or CTAs.
 - why: Trust is needed most where money is asked for. Putting all proof on the homepage and none on the pricing page leaves the buyer alone at the highest-friction moment.
 
 ### Missing compliance badges
-- severity: critical
+- severity: major
 - region: tiers
 - look_for: For B2B software, no visible SOC2, ISO 27001, GDPR, HIPAA, or PCI compliance indicator near the enterprise tier or in a trust strip.
 - why: For enterprise buyers in regulated or even semi-regulated industries, compliance is a binary filter. Missing badges kills the deal before sales ever speaks to the prospect.
@@ -545,7 +547,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: Vague proof reads as manufactured. A real name, real photo, real title, real company is the minimum bar.
 
 ### Unverifiable third-party ratings
-- severity: major
+- severity: minor
 - region: footer
 - look_for: Claims like "Rated 5 stars" with no source attribution, no platform logo, and no link to the verifiable review platform (G2, Capterra, Trustpilot, Product Hunt).
 - why: An unsourced rating is just a graphic. Link or display the source or take the badge down.
@@ -563,7 +565,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: Self-serve buyers want visual reassurance at the payment step. Cheap, easy, slight but real conversion lift.
 
 ### Unquantified claims
-- severity: major
+- severity: minor
 - region: tiers
 - look_for: Marketing copy makes vague claims ("Save time", "Boost productivity", "Faster") with no numbers, percentages, or specific outcomes attached.
 - why: Specificity beats vagueness for trust. "Saves 4 hours/week on reconciliation" beats "saves time" by a lot.

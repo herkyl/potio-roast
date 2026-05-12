@@ -42,6 +42,22 @@ export function rateLimitConfigured(): boolean {
 }
 
 export async function checkRateLimit(ip: string): Promise<LimitVerdict> {
+  // Dev never rate-limits. The Vercel deploy still enforces;
+  // `npm run dev` is for iterating and shouldn't blockade you.
+  if (process.env.NODE_ENV !== 'production') {
+    return { ok: true };
+  }
+
+  // Production: a comma-separated list of IPs that bypass the limiter.
+  // Useful for your own IP during demos, or for a load-tester.
+  const bypassIps = (process.env.RATELIMIT_BYPASS_IPS || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean);
+  if (bypassIps.includes(ip)) {
+    return { ok: true };
+  }
+
   if (!redis || !perIpHour || !perIpDay || !globalDay) {
     return { ok: true };
   }

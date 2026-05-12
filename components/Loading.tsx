@@ -3,12 +3,13 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { Stage } from '@/lib/schemas';
 import { BrailleSpinner } from './BrailleSpinner';
+import { CtaBlock } from './CtaBlock';
 
 type Props = {
   url: string;
   stages: Stage[];
   startedAt: number;
-  errored?: string | null;
+  errored?: { message: string; isRateLimit?: boolean } | null;
 };
 
 const PLANNED_STAGES: { id: string; label: string; weight: number }[] = [
@@ -163,15 +164,23 @@ export function Loading({ url, stages, startedAt, errored }: Props) {
                     marginBottom: 4,
                   }}
                 >
-                  error
+                  {errored.isRateLimit ? 'rate limit' : 'error'}
                 </div>
-                {errored}
+                {errored.message}
               </div>
             )}
           </div>
         </div>
       </div>
 
+      {/* On rate-limit specifically, surface the CTA below the terminal.
+          The user is engaged but blocked from running another roast —
+          a natural moment to offer the alternative path. */}
+      {errored?.isRateLimit && (
+        <div className="fade-up" style={{ marginTop: 32 }}>
+          <CtaBlock />
+        </div>
+      )}
     </div>
   );
 }

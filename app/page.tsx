@@ -9,13 +9,19 @@ import type { Result, Stage } from '@/lib/schemas';
 
 type Screen = 'landing' | 'loading' | 'results';
 
+export type PipelineError = {
+  message: string;
+  /** HTTP 429 from the API. Triggers the "while you're here" CTA below. */
+  isRateLimit?: boolean;
+};
+
 export default function Page() {
   const [screen, setScreen] = useState<Screen>('landing');
   const [submission, setSubmission] = useState<{ url: string; context: string } | null>(null);
   const [stages, setStages] = useState<Stage[]>([]);
   const [startedAt, setStartedAt] = useState<number>(0);
   const [result, setResult] = useState<Result | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [error, setError] = useState<PipelineError | null>(null);
 
   const abortRef = useRef<AbortController | null>(null);
 
@@ -52,12 +58,15 @@ export default function Page() {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
-        setError(err.error || `HTTP ${res.status}`);
+        setError({
+          message: err.error || `HTTP ${res.status}`,
+          isRateLimit: res.status === 429,
+        });
         return;
       }
 
       if (!res.body) {
-        setError('No response body');
+        setError({ message: 'No response body' });
         return;
       }
 
@@ -87,7 +96,9 @@ export default function Page() {
       }
     } catch (err) {
       if ((err as { name?: string }).name === 'AbortError') return;
-      setError(err instanceof Error ? err.message : 'Network error');
+      setError({
+        message: err instanceof Error ? err.message : 'Network error',
+      });
     }
 
     function handleEvent(event: string, data: unknown) {
@@ -117,7 +128,7 @@ export default function Page() {
           console.warn('[roast] no slug on result, URL not updated');
         }
       } else if (event === 'error') {
-        setError((data as { message: string }).message);
+        setError({ message: (data as { message: string }).message });
       }
     }
   }, []);

@@ -104,6 +104,15 @@ export async function analyzePricingPage({
       messages: [{ role: 'user', content: userContent }],
       temperature: 0.7,
       maxRetries: 1,
+      // Disable Gemini 2.5 Flash's dynamic "thinking" / reasoning tokens.
+      // For a structured-output, rule-matching task like ours, thinking
+      // adds latency and output-token cost without measurably improving
+      // findings. With thinkingBudget=0, generation drops ~30–50%.
+      providerOptions: {
+        google: {
+          thinkingConfig: { thinkingBudget: 1024 },
+        },
+      },
     });
   } catch (err) {
     logger.error(`llm error: ${err instanceof Error ? err.message : err}`);

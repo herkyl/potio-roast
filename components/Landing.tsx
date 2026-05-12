@@ -88,7 +88,7 @@ export function Landing({ onSubmit, initialUrl = '' }: Props) {
                 inputMode="url"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="https://your-saas.com/pricing"
+                placeholder="your-site.io/pricing"
                 style={{
                   flex: 1,
                   background: 'transparent',
@@ -115,7 +115,7 @@ export function Landing({ onSubmit, initialUrl = '' }: Props) {
                 <span style={{ color: 'var(--accent)' }}>+</span>&nbsp; add context
                 (optional)&nbsp;
                 <span style={{ color: 'var(--fg-mute)', opacity: 0.6 }}>
-                  — ACV, ICP, what's bugging you
+                  — ICP, current challenges, etc.
                 </span>
               </button>
             ) : (

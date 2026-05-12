@@ -472,12 +472,6 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - look_for: The page's meta description is empty, default boilerplate, or fails to mention starting prices, free trial, or what the product does.
 - why: The meta description is SERP ad copy. Mentioning starting price or "free plan available" increases click-through.
 
-### Images instead of text for prices
-- severity: major
-- region: tiers
-- look_for: The actual price numbers or core feature lists are rendered inside PNG/JPG/SVG images rather than as HTML text.
-- why: Images aren't indexable, aren't selectable, aren't accessible to screen readers, and aren't parseable by AI buyers. It's a complete distribution and accessibility failure for the most important content on the page.
-
 ---
 
 ## Copy and messaging

@@ -43,7 +43,7 @@ export function Landing({ onSubmit, initialUrl = '' }: Props) {
           }}
         >
           Your pricing,&nbsp;
-          <span style={{ fontStyle: 'italic', color: 'var(--fg-dim)' }}>
+          <span style={{ fontStyle: 'italic', color: 'var(--accent)' }}>
             roasted.
           </span>
         </h1>

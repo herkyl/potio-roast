@@ -13,7 +13,7 @@ import type { Severity } from './schemas';
  * Cap the total penalty at 75 so even a page with many findings still
  * lands at 25 — leaves the bottom of the grade ladder meaningful.
  */
-const PENALTY = { critical: 5, major: 2, minor: 0.5 } as const;
+const PENALTY = { critical: 15, major: 5, minor: 1 } as const;
 const MAX_PENALTY = 75;
 const FLOOR_SCORE = 25;
 

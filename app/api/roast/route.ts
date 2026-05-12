@@ -3,7 +3,7 @@ import { lookup } from 'node:dns/promises';
 import { RoastRequestSchema, type Stage, type Result } from '@/lib/schemas';
 import { loadRules } from '@/lib/rules';
 import { crawlPricingPage } from '@/lib/crawl';
-import { captureScreenshot } from '@/lib/screenshot';
+import { captureScreenshot, getScreenshotMode } from '@/lib/screenshot';
 import { analyzePricingPage } from '@/lib/llm';
 import {
   checkRateLimit,
@@ -49,8 +49,11 @@ export async function POST(req: NextRequest) {
   }
 
   const { url, context } = parsed.data;
-  logger.info(`/api/roast ip=${ip} url=${url} ctx=${context ? 'yes' : 'no'}`);
-  const stream = createSseStream(url, context);
+  const reqId = Math.random().toString(36).slice(2, 8);
+  logger.info(
+    `[roast ${reqId}] /api/roast ip=${ip} url=${url} ctx=${context ? 'yes' : 'no'} screenshot=${getScreenshotMode()}`
+  );
+  const stream = createSseStream(url, context, reqId);
 
   return new Response(stream, {
     headers: {
@@ -61,9 +64,19 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  function createSseStream(targetUrl: string, ctx: string | undefined) {
+  function createSseStream(
+    targetUrl: string,
+    ctx: string | undefined,
+    reqId: string
+  ) {
     const startedAt = Date.now();
     const encoder = new TextEncoder();
+
+    // Helper for the "time since request start" prefix so every log line
+    // makes the pipeline timeline visible at a glance.
+    const elapsed = () => Date.now() - startedAt;
+    const tag = (id: string) =>
+      `[roast ${reqId}] T+${String(elapsed()).padStart(5, ' ')}ms · ${id}`;
 
     return new ReadableStream<Uint8Array>({
       async start(controller) {
@@ -78,14 +91,22 @@ export async function POST(req: NextRequest) {
         const stageTimer = (id: string, label: string, detail?: string) => {
           const t0 = Date.now();
           stage({ id, label, detail, status: 'running' });
-          return (finalDetail?: string) =>
+          logger.info(
+            `${tag(id)} started — ${detail ?? label}`
+          );
+          return (finalDetail?: string) => {
+            const ms = Date.now() - t0;
             stage({
               id,
               label,
               detail: finalDetail ?? detail,
               status: 'done',
-              ms: Date.now() - t0,
+              ms,
             });
+            logger.info(
+              `${tag(id)} done in ${ms}ms — ${finalDetail ?? detail ?? label}`
+            );
+          };
         };
 
         try {
@@ -114,11 +135,16 @@ export async function POST(req: NextRequest) {
             'Crawling pricing page',
             'reading HTML…'
           );
-          const finishShot = stageTimer(
-            'shot',
-            'Capturing screenshot',
-            'viewport 1440 × 900, full page…'
-          );
+
+          const mode = getScreenshotMode();
+          const shotDetail =
+            mode === 'trimmed'
+              ? 'viewport 1440 × 4000 (trimmed)…'
+              : mode === 'off'
+                ? 'disabled (SCREENSHOT_MODE=off)'
+                : 'viewport 1440 × 900, full page…';
+
+          const finishShot = stageTimer('shot', 'Capturing screenshot', shotDetail);
 
           const crawlPromise = crawlPricingPage(targetUrl).then(
             (c) => {
@@ -128,31 +154,50 @@ export async function POST(req: NextRequest) {
               return c;
             },
             (err) => {
+              const msg = err instanceof Error ? err.message : 'crawl failed';
+              logger.error(`${tag('crawl')} ERROR — ${msg}`);
               stage({
                 id: 'crawl',
                 label: 'Crawling pricing page',
-                detail: err instanceof Error ? err.message : 'crawl failed',
+                detail: msg,
                 status: 'error',
               });
               throw err;
             }
           );
 
-          const shotPromise = captureScreenshot(targetUrl).then(
-            (s) => {
-              finishShot(`${s.width}×${s.height}`);
-              return s;
-            },
-            (err) => {
-              stage({
-                id: 'shot',
-                label: 'Capturing screenshot',
-                detail: err instanceof Error ? err.message : 'screenshot failed',
-                status: 'error',
-              });
-              return null;
-            }
-          );
+          const shotPromise: Promise<{
+            url: string;
+            height: number;
+          } | null> =
+            mode === 'off'
+              ? (() => {
+                  // Emit an instant-done stage so the loader UI doesn't
+                  // sit waiting forever, and resolve null so the rest of
+                  // the pipeline proceeds with no image.
+                  finishShot('skipped — text-only mode');
+                  return Promise.resolve(null);
+                })()
+              : captureScreenshot(targetUrl).then(
+                  (s) => {
+                    finishShot(`${s.width}×${s.height}`);
+                    return s;
+                  },
+                  (err) => {
+                    const msg =
+                      err instanceof Error
+                        ? err.message
+                        : 'screenshot failed';
+                    logger.error(`${tag('shot')} ERROR — ${msg}`);
+                    stage({
+                      id: 'shot',
+                      label: 'Capturing screenshot',
+                      detail: msg,
+                      status: 'error',
+                    });
+                    return null;
+                  }
+                );
 
           const [crawl, screenshot] = await Promise.all([
             crawlPromise,
@@ -236,13 +281,13 @@ export async function POST(req: NextRequest) {
           }
 
           logger.info(
-            `roast complete in ${result.duration} — score ${result.score} ${result.grade}, ${result.roasts.length} findings → /r/${slug}`
+            `[roast ${reqId}] T+${elapsed()}ms · pipeline complete — score ${result.score} ${result.grade}, ${result.roasts.length} findings → /r/${slug}`
           );
           send('result', result);
         } catch (err) {
           const message =
             err instanceof Error ? err.message : 'Something went wrong';
-          logger.error(`roast pipeline error: ${message}`, err);
+          logger.error(`[roast ${reqId}] T+${elapsed()}ms · pipeline error: ${message}`, err);
           send('error', { message });
         } finally {
           await releaseConcurrent(ip);

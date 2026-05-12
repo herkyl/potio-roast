@@ -81,5 +81,13 @@ export const AnalysisSchema = z.object({
       why: z.string(),
     })
   ),
+  /**
+   * Diagnostic only — never rendered. The model reports whether it could
+   * actually see the screenshot we attached as a URL. Logged server-side so
+   * we can verify whether Gemini processes fileData.fileUri for arbitrary
+   * third-party CDN URLs. Falsifiable: if the model describes pixels we know
+   * are on the page, it saw it; if it returns "no_image_seen", it didn't.
+   */
+  imageProbe: z.string().optional(),
 });
 export type Analysis = z.infer<typeof AnalysisSchema>;

@@ -3,6 +3,23 @@ import { logger } from './logger';
 const ENDPOINT = 'https://api.allscreenshots.com/v1/screenshots';
 const CLIENT_TIMEOUT_MS = 35_000;
 
+/**
+ * SCREENSHOT_MODE controls the screenshot stage:
+ *   - "full"    (default) — full-page capture, viewport 1440×900. Attached to LLM.
+ *   - "trimmed" — capture only the first ~4000px (fullPage:false). Attached to LLM.
+ *   - "off"     — skip screenshot entirely. UI preview shows "unavailable",
+ *                 LLM call is text-only.
+ *
+ * Set in .env.local. Useful for A/B testing pipeline speed vs finding quality.
+ */
+export type ScreenshotMode = 'full' | 'trimmed' | 'off';
+
+export function getScreenshotMode(): ScreenshotMode {
+  const raw = (process.env.SCREENSHOT_MODE || 'full').toLowerCase();
+  if (raw === 'trimmed' || raw === 'off') return raw;
+  return 'full';
+}
+
 export type ScreenshotResult = {
   url: string;
   width: number;
@@ -16,8 +33,16 @@ export async function captureScreenshot(targetUrl: string): Promise<ScreenshotRe
     throw new Error('ALLSCREENSHOTS_API_KEY is not set');
   }
 
+  const mode = getScreenshotMode();
   const t0 = Date.now();
-  logger.debug(`screenshot → POST ${ENDPOINT}`, { url: targetUrl });
+  logger.debug(`screenshot → POST ${ENDPOINT} mode=${mode}`, { url: targetUrl });
+
+  // Trimmed: viewport 1440×4000 with fullPage:false caps the capture height.
+  // Full (default): standard fullPage capture.
+  const captureBody =
+    mode === 'trimmed'
+      ? { fullPage: false, viewport: { width: 1440, height: 4000 } }
+      : { fullPage: true, viewport: { width: 1440, height: 900 } };
 
   const controller = new AbortController();
   const timeout = setTimeout(() => {
@@ -37,10 +62,9 @@ export async function captureScreenshot(targetUrl: string): Promise<ScreenshotRe
       },
       body: JSON.stringify({
         url: targetUrl,
-        fullPage: true,
+        ...captureBody,
         blockAds: true,
         blockCookieBanners: true,
-        viewport: { width: 1440, height: 900 },
         format: 'png',
         responseType: 'url',
         // 'load' is far more reliable than 'networkidle' for pages with

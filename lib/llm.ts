@@ -38,7 +38,13 @@ Reserve critical for real fires. The default impulse will be to inflate severity
 
 Do not compute a score. Do not grade the page. Do not write a tier label. Those are derived from your findings downstream.
 
-Summary: a single paragraph ≤320 chars, in the same dry voice. Describe what you found — the headline patterns, not a verdict. Quote a real noun from the page (a tier name, a CTA label, a price) if you can. Don't pre-judge the score; don't say "this page is bad" or "this page is fine." Let the findings speak.`;
+Summary: a single paragraph ≤320 chars, in the same dry voice. Describe what you found — the headline patterns, not a verdict. Quote a real noun from the page (a tier name, a CTA label, a price) if you can. Don't pre-judge the score; don't say "this page is bad" or "this page is fine." Let the findings speak.
+
+DIAGNOSTIC FIELD \`imageProbe\` — this is for engineering, not the end user. Be honest, do not make anything up.
+- If a screenshot image was provided AND you can actually analyse its pixels, write one short factual phrase describing what you can see at the top of the screenshot (dominant colours, layout, a tier name visible in the hero). 80 chars max.
+- If you received only a URL reference but no rendered pixels you can actually analyse, write exactly: "url_only_no_image"
+- If no image or image reference was provided, write exactly: "no_input_image"
+This field will be logged server-side to verify whether the image pipeline is working. It is not shown to the user.`;
 
 export type AnalysisInput = {
   rules: string;
@@ -107,6 +113,9 @@ export async function analyzePricingPage({
   const { object, usage, finishReason } = result;
   logger.info(
     `llm ok in ${Date.now() - t0}ms — finish=${finishReason}, in=${usage.inputTokens ?? '?'} out=${usage.outputTokens ?? '?'}, roasts=${object.roasts.length}`
+  );
+  logger.info(
+    `llm imageProbe = ${object.imageProbe ? `"${object.imageProbe}"` : '<empty>'} (screenshot_url=${screenshotUrl ? 'attached' : 'none'})`
   );
 
   return object;

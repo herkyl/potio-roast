@@ -19,7 +19,8 @@
       "Bash(kill 97783)",
       "Bash(wait)",
       "Bash(npm uninstall *)",
-      "Bash(npm view *)"
+      "Bash(npm view *)",
+      "Bash(curl -sL https://vercel.com/docs/functions/configuring-functions/duration)"
     ]
   }
 }

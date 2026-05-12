@@ -20,7 +20,10 @@ import {
 } from '@/lib/scoring';
 
 export const runtime = 'nodejs';
-export const maxDuration = 60;
+// Hobby tier with Fluid Compute allows up to 300s; we use 180s as a
+// generous buffer over typical pipeline times (~30–50s) while still
+// surfacing genuinely pathological runs.
+export const maxDuration = 180;
 
 export async function POST(req: NextRequest) {
   let body: unknown;

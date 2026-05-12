@@ -54,7 +54,7 @@ export function Shell({ children, screen, onHome }: Props) {
           gap: 8,
         }}
       >
-        <div>© Potio · Pricing Clinic · made for founders who can take it</div>
+        <div>© Potio Pricing Roaster · made for founders who can take it</div>
       </footer>
     </div>
   );

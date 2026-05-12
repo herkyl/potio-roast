@@ -173,7 +173,7 @@ export function Landing({ onSubmit, initialUrl = '' }: Props) {
                 flexWrap: 'wrap',
               }}
             >
-              <span>~30s · no signup</span>
+              <span>~90s · no signup</span>
             </div>
             <button
               type="submit"

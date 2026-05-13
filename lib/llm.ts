@@ -110,7 +110,7 @@ export async function analyzePricingPage({
       // findings. With thinkingBudget=0, generation drops ~30–50%.
       providerOptions: {
         google: {
-          thinkingConfig: { thinkingBudget: 1024 },
+          thinkingConfig: { thinkingBudget: 2048 },
         },
       },
     });

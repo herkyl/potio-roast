@@ -18,7 +18,7 @@ const PLANNED_STAGES: { id: string; label: string; weight: number }[] = [
   { id: 'shot', label: 'Capturing screenshot', weight: 0.15 },
   { id: 'kb', label: 'Loading knowledge base', weight: 0.05 },
   { id: 'dx', label: 'Cross-referencing diagnostics', weight: 0.2 },
-  { id: 'sharp', label: 'Sharpening the knives', weight: 0.2 },
+  { id: 'sharp', label: 'Drafting the verdict', weight: 0.2 },
   { id: 'compile', label: 'Compiling roasts', weight: 0.2 },
 ];
 

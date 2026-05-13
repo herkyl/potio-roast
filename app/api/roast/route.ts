@@ -224,8 +224,8 @@ export async function POST(req: NextRequest) {
           );
           const finishSharp = stageTimer(
             'sharp',
-            'Sharpening the knives',
-            'calibrating tone'
+            'Drafting the verdict',
+            'writing each finding in voice'
           );
 
           const analysis = await analyzePricingPage({

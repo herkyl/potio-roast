@@ -189,7 +189,7 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - why: Unclear renewal terms cause chargebacks, public complaints, and regulatory exposure. Saying so on the pricing page builds more trust than the cost in lost auto-renewals.
 
 ### Click-to-cancel friction
-- severity: critical
+- severity: major
 - region: faq
 - look_for: The FAQ or terms require a support ticket, email, or live chat to cancel a self-serve subscription, rather than a one-click in-product cancellation.
 - why: FTC's click-to-cancel rule (and similar EU rules) require cancellation to be as easy as signup. Beyond the legal exposure, it's a brand-destroying friction that customers tell each other about.

@@ -24,6 +24,12 @@ The `look_for` and `why` fields below are operational raw material. Don't echo t
 - look_for: More than four distinct pricing tier columns shown side by side on desktop.
 - why: Four tiers is roughly where comparison cost starts beating decision benefit. Past that, buyers spend their attention budget on the matrix rather than the upgrade, and the cheapest option wins by default.
 
+### Generic good-better-best packaging
+- severity: critical
+- region: tiers
+- look_for: Three (or more) tiers laid out as a strict feature ladder where each higher tier is a superset of the one below. Tier names are generic (Starter/Pro/Business, Basic/Plus/Premium, Free/Standard/Advanced). No subtitle names the distinct user or problem each tier is for. Differentiation is mostly by quantity (more seats, more storage, more usage, more features) rather than by job or persona. Do not fire if the product is genuinely single-job, meaning a simple utility serving one buyer with one workflow where good-better-best really is the right answer.
+- why: Good-better-best is the easiest packaging to ship and the hardest to monetise well. Every feature ends up shoved into the top tier, the cheaper tiers get the leftovers, and the buyer's only question is "which one can I afford?" Packaging built around jobs to be done (one tier per problem a distinct buyer is solving) lets the page sell itself, makes self-selection obvious and unlocks pricing power that GBB structurally caps. Not every product can be JTBD-packaged, but most that default to GBB haven't asked whether they could be.
+
 ### Freemium cannibal
 - severity: critical
 - region: tiers

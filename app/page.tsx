@@ -6,6 +6,12 @@ import { Landing } from '@/components/Landing';
 import { Loading } from '@/components/Loading';
 import { Results } from '@/components/Results';
 import type { Result, Stage } from '@/lib/schemas';
+import {
+  trackPageView,
+  trackRoastComplete,
+  trackRoastError,
+  trackRoastSubmit,
+} from '@/lib/analytics';
 
 type Screen = 'landing' | 'loading' | 'results';
 
@@ -38,12 +44,16 @@ export default function Page() {
   }, []);
 
   const handleSubmit = useCallback(async (data: { url: string; context: string }) => {
+    const submittedAt = Date.now();
+    const submittedUrl = data.url;
     setSubmission(data);
     setStages([]);
     setResult(null);
     setError(null);
-    setStartedAt(Date.now());
+    setStartedAt(submittedAt);
     setScreen('loading');
+
+    trackRoastSubmit({ url: data.url, hasContext: data.context.length > 0 });
 
     const controller = new AbortController();
     abortRef.current = controller;
@@ -58,10 +68,10 @@ export default function Page() {
 
       if (!res.ok) {
         const err = await res.json().catch(() => ({ error: `HTTP ${res.status}` }));
-        setError({
-          message: err.error || `HTTP ${res.status}`,
-          isRateLimit: res.status === 429,
-        });
+        const message = err.error || `HTTP ${res.status}`;
+        const isRateLimit = res.status === 429;
+        setError({ message, isRateLimit });
+        trackRoastError({ url: submittedUrl, message, isRateLimit });
         return;
       }
 
@@ -113,22 +123,34 @@ export default function Page() {
         });
       } else if (event === 'result') {
         const r = data as Result;
-        console.log('[roast] result received, slug=', r.slug, 'keys=', Object.keys(r));
         setResult(r);
         setScreen('results');
+
+        trackRoastComplete({
+          url: r.url,
+          slug: r.slug,
+          score: r.score,
+          grade: r.grade,
+          findings: r.roasts.length,
+          durationMs: Date.now() - submittedAt,
+        });
+
         if (r.slug && typeof window !== 'undefined') {
           const target = `/r/${r.slug}`;
-          console.log('[roast] updating URL to', target);
           window.history.replaceState({}, '', target);
-          // Verify it actually stuck on the next tick.
-          setTimeout(() => {
-            console.log('[roast] URL after replaceState:', window.location.pathname);
-          }, 0);
-        } else {
-          console.warn('[roast] no slug on result, URL not updated');
+          // history.replaceState doesn't trigger Next's router, so GA never
+          // sees a page_view. Fire one manually so /r/[slug] views are
+          // attributed to the roast they represent.
+          trackPageView(target, `Potio Pricing Roaster · ${r.slug}`);
         }
       } else if (event === 'error') {
-        setError({ message: (data as { message: string }).message });
+        const message = (data as { message: string }).message;
+        setError({ message });
+        trackRoastError({
+          url: submittedUrl,
+          message,
+          isRateLimit: false,
+        });
       }
     }
   }, []);

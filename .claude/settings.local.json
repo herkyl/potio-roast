@@ -20,7 +20,13 @@
       "Bash(wait)",
       "Bash(npm uninstall *)",
       "Bash(npm view *)",
-      "Bash(curl -sL https://vercel.com/docs/functions/configuring-functions/duration)"
+      "Bash(curl -sL https://vercel.com/docs/functions/configuring-functions/duration)",
+      "Bash(node --version; which node; ls /Users/serge/.nvm/versions/node/ 2>&1; echo \"---\"; cat /Users/serge/workspace/potio/roast/.nvmrc 2>&1; echo \"---\"; head -2 /Users/serge/workspace/potio/roast/node_modules/.bin/next 2>&1)",
+      "Bash(/Users/serge/.nvm/versions/node/v18.16.0/bin/node /Users/serge/.nvm/versions/node/v18.16.0/bin/npm run build)",
+      "Bash(/Users/serge/.nvm/versions/node/v18.16.0/bin/node /Users/serge/workspace/potio/roast/node_modules/next/dist/bin/next build)",
+      "Bash(/usr/local/bin/node --version)",
+      "Read(//usr/local/Cellar/node/23.11.0/bin/**)",
+      "Bash(/usr/local/bin/node /Users/serge/workspace/potio/roast/node_modules/next/dist/bin/next build)"
     ]
   }
 }

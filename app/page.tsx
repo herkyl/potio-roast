@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Shell } from '@/components/Shell';
 import { Landing } from '@/components/Landing';
 import { Loading } from '@/components/Loading';
@@ -30,6 +30,7 @@ export default function Page() {
   const [error, setError] = useState<PipelineError | null>(null);
 
   const abortRef = useRef<AbortController | null>(null);
+  const autoRanRef = useRef(false);
 
   const handleHome = useCallback(() => {
     abortRef.current?.abort();
@@ -154,6 +155,27 @@ export default function Page() {
       }
     }
   }, []);
+
+  // Lets another site drive the roaster with a plain link or GET form, e.g.
+  // <form action="https://roast.potio.cc/" method="GET">
+  //   <input name="url" />
+  // </form>
+  // Landing lands on / with ?url=..., we skip straight to the loading state.
+  useEffect(() => {
+    if (autoRanRef.current) return;
+    const params = new URLSearchParams(window.location.search);
+    const rawUrl = params.get('url');
+    if (!rawUrl?.trim()) return;
+    autoRanRef.current = true;
+
+    const url = /^https?:\/\//i.test(rawUrl) ? rawUrl : `https://${rawUrl}`;
+    const context = params.get('context') ?? '';
+
+    // Drop the query string so a refresh or back-navigation doesn't
+    // re-trigger the same roast.
+    window.history.replaceState({}, '', window.location.pathname);
+    handleSubmit({ url, context });
+  }, [handleSubmit]);
 
   return (
     <Shell screen={screen} onHome={handleHome}>

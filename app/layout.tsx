@@ -3,6 +3,7 @@ import { Fraunces, JetBrains_Mono } from 'next/font/google';
 import Script from 'next/script';
 import './globals.css';
 import './results.css';
+import { PostHogInit } from './providers';
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
@@ -36,6 +37,8 @@ export default function RootLayout({
     <html lang="en" data-theme="dark" className={`${mono.variable} ${serif.variable}`}>
       <body>
         {children}
+
+        <PostHogInit />
 
         {/* Google Analytics — loaded only when NEXT_PUBLIC_GA_ID is set, so
             local dev doesn't pollute production analytics. */}

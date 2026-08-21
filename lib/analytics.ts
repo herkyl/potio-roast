@@ -1,7 +1,10 @@
 /**
- * Thin wrapper around Google Analytics gtag. Safe to call before the script
- * loads (no-ops). Add new events here so call sites stay short and typed.
+ * Thin wrapper around Google Analytics gtag and PostHog. Safe to call before
+ * either script loads (no-ops). Add new events here so call sites stay short
+ * and typed.
  */
+
+import posthog from 'posthog-js';
 
 type GtagFn = (
   command: 'event' | 'config' | 'js' | 'set',
@@ -23,19 +26,27 @@ function safeGtag(...args: Parameters<GtagFn>): void {
   window.gtag(...args);
 }
 
-/** Generic event dispatch. */
+/** Generic event dispatch, fired to both GA and PostHog. */
 export function trackEvent(
   name: string,
   params?: Record<string, unknown>
 ): void {
   safeGtag('event', name, params ?? {});
+  if (typeof window !== 'undefined' && posthog.__loaded) {
+    posthog.capture(name, params);
+  }
 }
 
 /**
  * Manual page_view — used after window.history.replaceState changes the
- * URL without a Next.js navigation (GA wouldn't otherwise notice).
+ * URL without a Next.js navigation (GA and PostHog wouldn't otherwise
+ * notice).
  */
 export function trackPageView(path: string, title?: string): void {
+  if (typeof window !== 'undefined' && posthog.__loaded) {
+    posthog.capture('$pageview', { $current_url: path, title });
+  }
+
   if (!GA_ID) return;
   safeGtag('config', GA_ID, {
     page_path: path,
